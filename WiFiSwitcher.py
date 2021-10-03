@@ -5,6 +5,7 @@ import re
  
 # Scan available Wifi networks - current approach stops and starts the wlansvc service to initiate a fresh scan. 
 # Probably a less intrusive way to do this is, as the core functionality here is to provide protection against flaky connections :)
+# NOTE: These commands need to be run as Administrator
 os.system('cmd /c "net stop wlansvc"')
 os.system('cmd /c "net start wlansvc"')
 
@@ -31,8 +32,8 @@ wlan_interface = os.popen('cmd /c "netsh wlan show interfaces"')
 for line in wlan_interface:
     if(("SSID" in line) and ("BSSID" not in line)):
         current_network = line.replace("SSID","")
-        current_network = line.replace(":","")
-        current_network = line.replace(" ","")
+        current_network = current_network.replace(":","")
+        current_network = current_network.replace(" ","")
         if(current_network == network1):
             current_network = network1
             next_network = network2
